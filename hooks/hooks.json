@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/delivery-grade-check.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before completing, check if any delivery-grade files (.html, .htm, .css, .jsx, .tsx, or README.md in public repos) were created or modified during this session via Write or Edit tools. If delivery-grade files were touched, add this note at the end of your response: '---\nLingua-QC: Delivery-grade files were modified. Consider running /lingua to verify multilingual quality and encoding.' If ONLY LLM-grade files (CLAUDE.md, agent definitions, rules, configs, internal notes) were modified, say nothing about lingua-qc. If no files were modified at all, say nothing.",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
